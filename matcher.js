@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-export default (matchers, panel) => {
+module.exports = (matchers, panel) => {
 	const results = matchers.map((regex, index) => {
 		if (!regex) return undefined;
 
@@ -30,7 +30,7 @@ export default (matchers, panel) => {
 		return matchResults;
 	});
 
-	if (results.some(i => i === null)) return null;
+	if (results.some((i) => i === null)) return null;
 
 	return results;
 };
