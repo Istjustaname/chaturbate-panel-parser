@@ -1,14 +1,14 @@
-"use strict";
+'use strict';
 
-const debug = require("debug")("chaturbate:panel-parser");
-const fs = require("fs");
-const path = require("path");
-const memoizee = require("memoizee");
+const debug = require('debug')('chaturbate:panel-parser');
+const fs = require('fs');
+const path = require('path');
+const memoizee = require('memoizee');
 
 const getTransforms = memoizee(() => {
 	const transforms = {};
-	const normalizedPath = path.join(__dirname, "transforms");
-	fs.readdirSync(normalizedPath).forEach(file => {
+	const normalizedPath = path.join(__dirname, 'transforms');
+	fs.readdirSync(normalizedPath).forEach((file) => {
 		debug(`loading panel transform '${file}'...`);
 		// eslint-disable-next-line global-require
 		const transform = require(`./transforms/${file}`);
@@ -17,7 +17,7 @@ const getTransforms = memoizee(() => {
 	return transforms;
 });
 
-export default (panelAppName, panel) => {
+module.exports = (panelAppName, panel) => {
 	const transforms = getTransforms();
 
 	if (transforms[panelAppName]) {
@@ -27,14 +27,14 @@ export default (panelAppName, panel) => {
 
 	let found = null;
 
-	Object.keys(transforms).some(name => {
+	Object.keys(transforms).some((name) => {
 		debug(`trying transform panel for '${name}'...`);
 		found = transforms[name].transform(panel);
 		return Boolean(found);
 	});
 
 	if (found) {
-		debug("manually found transform");
+		debug('manually found transform');
 		return found;
 	}
 
